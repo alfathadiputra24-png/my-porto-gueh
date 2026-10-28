@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfath Adi Putra — STIE Kasih Bangsa | Prodi Manajemen</title>
+  <meta name="description" content="Website Portofolio Alfath Adi Putra - Mahasiswa Prodi Manajemen STIE Kasih Bangsa. Hobi Main Bola, Main Game, dan Ngoding." />
+  <meta name="theme-color" content="#090a0b" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Import map for Three.js and Lenis -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.0/examples/jsm/",
+      "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.mjs"
+    }
+  }
+  </script>
+
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Google Typography: Oswald & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --raw-color-ice-50: #f7fafb;
+      --raw-color-ice-100: #ebeef1;
+      --raw-color-ice-200: #dfe5e9;
+      --raw-color-steel-400: #b6c1c8;
+      --raw-color-ink-950: #090a0b;
+      --raw-color-ink-900: #0e0f14;
+      --raw-color-ink-800: #1b1d24;
+      --raw-color-ink-700: #2a2d36;
+      --raw-color-ink-alpha-35: rgba(9, 10, 11, 0.35);
+      --raw-color-cyan-400: #02d2e3;
+      --raw-color-cyan-alpha-25: rgba(2, 210, 227, 0.25);
+      --raw-color-cyan-alpha-50: rgba(2, 210, 227, 0.5);
+      --raw-color-white: #ffffff;
+
+      --background: var(--raw-color-ice-50);
+      --foreground: var(--raw-color-ink-950);
+      --foreground-muted: var(--raw-color-ink-alpha-35);
+      --surface-dark: var(--raw-color-ink-900);
+      --surface-black: var(--raw-color-ink-950);
+      --accent: var(--raw-color-cyan-400);
+      --accent-muted: var(--raw-color-cyan-alpha-25);
+
+      --type-impact: clamp(2.5rem, 5.5vw, 5.2rem);
+      --type-display-lg: clamp(1.8rem, 3.8vw, 3.2rem);
+      --type-display: clamp(1.6rem, 3vw, 2.5rem);
+      --type-heading: clamp(1.2rem, 2.2vw, 1.75rem);
+      --type-title: 1.15rem;
+      --type-lead: 1rem;
+      --type-label: 0.875rem;
+      --type-body: 0.825rem;
+      --type-eyebrow: 0.75rem;
+
+      --font-sans: "Space Grotesk", system-ui, sans-serif;
+      --font-display: "Oswald", Impact, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: auto; }
+
+    body {
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      text-transform: uppercase;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+    /* Large 16:9 Frameless Presentation Box Without Box Borders */
+    .hero-frameless-container {
+      position: relative;
+      width: 100%;
+      max-width: 840px;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      overflow: visible;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Soft Glow Aura Behind Character without sharp box edges */
+    .hero-electric-aura {
+      position: absolute;
+      inset: -5%;
+      background: radial-gradient(circle at center, rgba(2, 210, 227, 0.35) 0%, rgba(2, 210, 227, 0.08) 50%, transparent 75%);
+      filter: blur(30px);
+      animation: auraPulse 3.5s infinite ease-in-out alternate;
+      z-index: 1;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    @keyframes auraPulse {
+      0% { opacity: 0.4; transform: scale(0.92); }
+      100% { opacity: 0.9; transform: scale(1.06); }
+    }
+
+    .character-cutout-large {
+      position: relative;
+      z-index: 10;
+      height: 100%;
+      max-height: 100%;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 25px var(--raw-color-cyan-alpha-50));
+      transition: transform 0.4s ease, filter 0.4s ease;
+      margin: 0 auto;
+    }
+
+    .hero-frameless-container:hover .character-cutout-large {
+      transform: scale(1.04) translateY(-4px);
+      filter: drop-shadow(0 25px 40px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 35px rgba(2, 210, 227, 0.85));
+    }
+
+    .btn-profile {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.75rem;
+      background: var(--surface-dark);
+      color: var(--accent);
+      font-family: var(--font-sans);
+      font-size: var(--type-label);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      transition: color 250ms ease, transform 150ms ease, box-shadow 150ms ease;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .btn-profile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 250ms cubic-bezier(0.33, 0, 0, 1);
+      z-index: 0;
+    }
+    .btn-profile:hover::before { transform: scaleX(1); }
+    .btn-profile:hover { color: var(--surface-black); }
+    .btn-profile:active { transform: scale(0.96); }
+    .btn-profile span, .btn-profile i, .btn-profile svg { position: relative; z-index: 1; }
+
+    /* Sticky Stack Layer Recede Effects */
+    .sticky-stack {
+      position: relative;
+      background: var(--surface-black);
+    }
+    .sticky-layer {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .sticky-inner {
+      width: 100%;
+      min-height: 100vh;
+      transform-origin: center center;
+    }
+    .sticky-shade {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-black);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 40;
+    }
+
+    /* Equalizer Sound Wave Animation */
+    .eq-bar {
+      width: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: eqPulse 1.2s infinite ease-in-out alternate;
+    }
+    .eq-bar:nth-child(1) { height: 12px; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 18px; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 10px; animation-delay: 0.5s; }
+    .eq-bar:nth-child(4) { height: 16px; animation-delay: 0.2s; }
+
+    @keyframes eqPulse {
+      0% { height: 4px; }
+      100% { height: 20px; }
+    }
+
+    /* Coding Image Gallery Hover Zoom */
+    .gallery-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      border: 1px solid rgba(2, 210, 227, 0.3);
+      background: #0e0f14;
+      cursor: pointer;
+    }
+    .gallery-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.5s ease;
+    }
+    .gallery-card:hover img {
+      transform: scale(1.1);
+      filter: brightness(1.15);
+    }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(9, 10, 11, 0.95), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.8rem;
+    }
+    .gallery-card:hover .gallery-overlay {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading-veil" style="position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #07080a; color: #ffffff; pointer-events: auto;">
+    
+    <!-- Lightning Canvas Overlay -->
+    <canvas id="lightning-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;"></canvas>
+
+    <!-- Center Energy Core -->
+    <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; margin: auto;">
+      <div style="position: relative; width: 7.5rem; height: 7.5rem; display: grid; place-items: center; margin-bottom: 1.5rem;">
+        <svg width="100%" height="100%" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent); filter: drop-shadow(0 0 20px var(--accent));">
+          <polygon points="50,5 90,28 90,72 50,95 10,72 10,28" />
+          <path d="M55 12 L32 48 L52 48 L40 88 L72 42 L50 42 Z" fill="var(--accent)" stroke="#fff" stroke-width="1.5" />
+        </svg>
+        <div id="veil-fill" style="position: absolute; inset: 0; background: var(--accent); opacity: 0.25; transform-origin: bottom; transform: scaleY(0); border-radius: 50%;"></div>
+      </div>
+      
+      <div style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: 0.2em; text-shadow: 0 0 25px var(--accent);">
+        ALFATH ADI PUTRA
+      </div>
+      <div style="font-size: 0.85rem; color: var(--raw-color-steel-400); letter-spacing: 0.15em; margin-top: 0.4rem;">
+        STIE KASIH BANGSA • PRODI MANAJEMEN
+      </div>
+
+      <div style="margin-top: 1.25rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--accent); font-weight: 700; letter-spacing: 0.1em;">
+        <i class="fa-solid fa-bolt fa-bounce"></i>
+        <span>SISTEM PETIR & DEDIKASI MANAJEMEN...</span>
+      </div>
+    </div>
+
+    <!-- Bottom Loading Bar -->
+    <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 5px; background: rgba(255, 255, 255, 0.1); z-index: 10;">
+      <div id="veil-meter" style="height: 100%; width: 0%; background: var(--accent); box-shadow: 0 0 15px var(--accent); transition: width 0.15s ease;"></div>
+    </div>
+  </div>
+
+  <!-- Background Audio Controller -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="https://mp3tourl.com/audio/1792769642562-d632ae6d-4e53-4d0d-b20b-6591699526b3.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Audio Toggle Floating Widget -->
+  <div style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 90;">
+    <button id="music-toggle-btn" onclick="playUiClick(); toggleMusic();" class="flex items-center gap-3 px-4 py-2 rounded-full bg-slate-900/90 text-cyan-400 border border-cyan-500/40 shadow-xl backdrop-blur hover:scale-105 transition-all text-xs font-bold">
+      <div id="eq-container" class="flex items-center gap-1 h-5 opacity-50">
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+        <div class="eq-bar"></div>
+      </div>
+      <span id="music-status-text"><i class="fa-solid fa-music mr-1"></i> MUSIK: OFF</span>
+    </button>
+  </div>
+
+  <div class="sticky-stack">
+
+    <!-- Section 1: Hero -->
+    <section class="sticky-layer" data-hero id="hero" style="z-index: 10; background: var(--background);">
+      <div class="sticky-inner" id="hero-inner">
+        <!-- 3D Interactive WebGL Canvas -->
+        <canvas id="hero-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+
+        <div style="position: relative; z-index: 20; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem 1.5rem;" class="md:p-8">
+          
+          <!-- Navigation Bar -->
+          <header class="flex items-center justify-between z-30">
+            <a href="#hero" onclick="playUiClick()" class="flex items-center gap-3 font-display font-bold text-lg md:text-xl tracking-wider">
+              <span style="color: var(--accent);">ALFATH</span><span>.01</span>
+            </a>
+
+            <nav class="hidden lg:flex gap-8 text-xs font-medium tracking-wide">
+              <a href="#hero" onclick="playUiClick()" style="color: var(--accent);">UTAMA</a>
+              <a href="#hobi" onclick="playUiClick()" class="hover:text-cyan-400 transition-colors">HOBI & PASSION</a>
+              <a href="#pencapaian" onclick="playUiClick()" class="hover:text-cyan-400 transition-colors">PENCAPAIAN APLIKASI</a>
+              <a href="#keseharian" onclick="playUiClick()" class="hover:text-cyan-400 transition-colors">KESEHARIAN</a>
+              <a href="#manajemen" onclick="playUiClick()" class="hover:text-cyan-400 transition-colors">MANAJEMEN</a>
+              <a href="#kontak" onclick="playUiClick()" class="hover:text-cyan-400 transition-colors">KONTAK</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+              <a href="https://wa.me/6285935617640" target="_blank" onclick="playUiClick()" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold hover:bg-emerald-500 hover:text-black transition-all">
+                <i class="fa-brands fa-whatsapp text-sm"></i> 085935617640
+              </a>
+              <button onclick="playUiClick(); openModal();" class="btn-profile" style="padding: 0.4rem 1rem; font-size: 0.8rem;">
+                <span>[ HUBUNGI SAYA ]</span>
+              </button>
+            </div>
+          </header>
+
+          <!-- Middle Main Content Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center my-auto py-4">
+            
+            <!-- Left Info Rail -->
+            <div class="lg:col-span-3 text-left">
+              <div style="font-size: var(--type-eyebrow); color: var(--foreground-muted); letter-spacing: 0.15em; margin-bottom: 0.4rem;">
+                MAHASISWA_01 / MANAJEMEN
+              </div>
+              
+              <h1 id="hero-name" style="font-family: var(--font-display); font-size: var(--type-impact); font-weight: 700; line-height: 0.92; margin-bottom: 1rem; color: var(--foreground);">
+                ALFATH<br><span style="color: var(--accent);">ADI PUTRA</span>
+              </h1>
+
+              <ul style="display: flex; flex-direction: column; gap: 0.5rem; font-size: var(--type-lead); font-weight: 600;">
+                <li class="flex items-center gap-3">
+                  <span class="text-lg">🇮🇩</span> <span>INDONESIA</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-graduation-cap text-cyan-400"></i> <span>STIE KASIH BANGSA</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fa-solid fa-briefcase text-cyan-400"></i> <span>PRODI MANAJEMEN</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Profile Character Center 16:9 Frameless Big Presentation -->
+            <div class="lg:col-span-6 flex flex-col items-center justify-center my-2 lg:my-0 w-full">
+              
+              <!-- Quote Banner diatas Gambar -->
+              <div class="w-full max-w-xl mb-3 p-3.5 rounded-lg bg-slate-900/90 border border-cyan-500/40 text-center backdrop-blur-md shadow-xl">
+                <i class="fa-solid fa-quote-left text-cyan-400 mr-2 text-sm"></i>
+                <span class="text-xs md:text-sm font-medium tracking-wide text-cyan-300 normal-case italic">
+                  "Laki laki kalo miskin, dia sadar dia miskin. tapi kalo perempuan miskin, dia merasa salah pilih laki laki"
+                </span>
+                <i class="fa-solid fa-quote-right text-cyan-400 ml-2 text-sm"></i>
+              </div>
+
+              <div class="hero-frameless-container">
+                <div class="hero-electric-aura"></div>
+
+                <!-- Gambar Utama Tanpa Ubah URL (Ukuran 16:9 Frameless) -->
+                <img src="https://cdn.phototourl.com/member/2026-10-20-709c5d66-baae-41e1-b76a-d8b2af6a92cb.png" 
+                     class="character-cutout-large" 
+                     alt="Foto Profil Alfath Adi Putra - STIE Kasih Bangsa" />
+              </div>
+
+              <!-- Identity Subtitle Tag -->
+              <div class="w-full text-center relative z-20 mt-2">
+                <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: #090a0b; letter-spacing: 0.08em; text-shadow: 0 0 12px rgba(2, 210, 227, 0.4);">
+                  ALFATH ADI PUTRA
+                </div>
+                <div style="font-size: 0.75rem; color: #1b1d24; font-weight: 700; letter-spacing: 0.14em;">
+                  STIE KASIH BANGSA • PRODI MANAJEMEN
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Info Rail -->
+            <div class="lg:col-span-3 flex flex-col gap-3">
+              <!-- Panel 1: Kontak Cepat -->
+              <div class="bg-white/40 backdrop-blur-md p-4 rounded-lg border border-slate-300/60 shadow-sm">
+                <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.25rem;">INFORMASI KONTAK</div>
+                <div class="flex flex-col gap-1 text-xs font-semibold normal-case">
+                  <a href="https://wa.me/6285935617640" target="_blank" onclick="playUiClick()" class="text-emerald-600 hover:underline flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp: 085935617640
+                  </a>
+                  <a href="mailto:alfathadiputra24@gmail.com" onclick="playUiClick()" class="text-cyan-600 hover:underline flex items-center gap-2">
+                    <i class="fa-solid fa-envelope text-sm"></i> Email: alfathadiputra24@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              <!-- Panel 2: Stats Summary -->
+              <div class="bg-white/40 backdrop-blur-md p-4 rounded-lg border border-slate-300/60 shadow-sm">
+                <div style="font-size: var(--type-eyebrow); color: var(--foreground-muted); font-weight: 700; margin-bottom: 0.4rem;">RINGKASAN PROFIL</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; text-align: center;">
+                  <div>
+                    <div style="font-size: var(--type-eyebrow); color: var(--foreground-muted);">HOBI</div>
+                    <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--accent);">3</div>
+                  </div>
+                  <div>
+                    <div style="font-size: var(--type-eyebrow); color: var(--foreground-muted);">PRODI</div>
+                    <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;">S1</div>
+                  </div>
+                  <div>
+                    <div style="font-size: var(--type-eyebrow); color: var(--foreground-muted);">ENERGI</div>
+                    <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--accent);">100%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Hero Footer Row -->
+          <div class="flex flex-col md:flex-row items-center justify-between border-t border-gray-300/40 pt-3 gap-3">
+            <div style="font-size: var(--type-body); color: var(--foreground-muted);">
+              STIE KASIH BANGSA • PRODI MANAJEMEN
+            </div>
+            
+            <a href="#hobi" onclick="playUiClick()" class="btn-profile" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">
+              <span>JELAJAHI HOBI & PROJECT</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+            <div style="display: flex; gap: 1rem; font-size: var(--type-body); font-weight: 600;">
+              <span>STIE KASIH BANGSA</span>
+              <span>•</span>
+              <span>MANAJEMEN</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="sticky-shade" id="hero-shade"></div>
+    </section>
+
+    <!-- Section 2: Hobi & Passion (dengan galeri foto ngoding) -->
+    <section class="sticky-layer" data-season id="hobi" style="z-index: 20; background: var(--surface-black); color: var(--raw-color-white);">
+      <div class="sticky-inner" id="season-inner" style="position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 2rem 1.5rem;" class="md:p-10">
+        
+        <canvas id="chequer-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 30vh; pointer-events: none; z-index: 10;"></canvas>
+        <canvas id="reticle-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+
+        <div style="position: relative; z-index: 20;" class="flex flex-col md:flex-row justify-between items-start gap-6">
+          <div>
+            <h2 style="font-family: var(--font-display); font-size: var(--type-display-lg); font-weight: 700; line-height: 0.95; color: var(--accent);">
+              HOBI &<br><span style="color: var(--raw-color-white);">PASSION UTAMA</span><span style="color: var(--accent);">.</span>
+            </h2>
+            <div style="width: 2.5rem; height: 3px; background: var(--accent); margin: 0.75rem 0;"></div>
+            <p style="max-width: 28rem; font-size: var(--type-lead); line-height: 1.4; color: var(--raw-color-steel-400); text-transform: none;">
+              Tiga pilar hobi utama Alfath Adi Putra yang mengasah kerja tim, refleks strategi, dan logika pemrograman web modern.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-lg bg-slate-900/85 backdrop-blur-md border border-gray-800 w-full max-w-xs">
+            <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.5rem;">PILAR PASSION</div>
+            <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.8rem;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--raw-color-ink-700); padding-bottom: 0.3rem;">
+                <span style="font-weight: 700;"><i class="fa-solid fa-futbol text-cyan-400 mr-2"></i> MAIN BOLA</span>
+                <span style="color: var(--accent);">TAKTIK & KERJA TIM</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--raw-color-ink-700); padding-bottom: 0.3rem;">
+                <span style="font-weight: 700;"><i class="fa-solid fa-gamepad text-cyan-400 mr-2"></i> MAIN GAME</span>
+                <span style="color: var(--accent);">REFLEKS & STRATEGI</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="font-weight: 700;"><i class="fa-solid fa-code text-cyan-400 mr-2"></i> NGODING</span>
+                <span style="color: var(--accent);">LOGIKA & INOVASI</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hobby Cards Grid -->
+        <div style="position: relative; z-index: 20;" class="grid grid-cols-1 md:grid-cols-3 gap-5 my-4">
+          
+          <!-- Card 1: Main Bola -->
+          <div class="p-5 rounded border border-gray-700/60 bg-slate-900/60 hover:border-cyan-400 transition-all duration-300">
+            <div class="text-3xl text-cyan-400 mb-3"><i class="fa-solid fa-futbol"></i></div>
+            <div style="font-size: var(--type-eyebrow); color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.2rem;">HOBI 01</div>
+            <h3 style="font-family: var(--font-display); font-size: var(--type-heading); font-weight: 700; margin-bottom: 0.5rem;">MAIN BOLA</h3>
+            <p style="font-size: var(--type-body); color: var(--raw-color-steel-400); line-height: 1.4; text-transform: none;">
+              Mengasah kekompakan tim, keputusan cepat di bawah tekanan, serta menjaga stamina fisik tetap prima.
+            </p>
+          </div>
+
+          <!-- Card 2: Main Game -->
+          <div class="p-5 rounded border border-gray-700/60 bg-slate-900/60 hover:border-cyan-400 transition-all duration-300">
+            <div class="text-3xl text-cyan-400 mb-3"><i class="fa-solid fa-gamepad"></i></div>
+            <div style="font-size: var(--type-eyebrow); color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.2rem;">HOBI 02</div>
+            <h3 style="font-family: var(--font-display); font-size: var(--type-heading); font-weight: 700; margin-bottom: 0.5rem;">MAIN GAME</h3>
+            <p style="font-size: var(--type-body); color: var(--raw-color-steel-400); line-height: 1.4; text-transform: none;">
+              Melatih koordinasi motorik, responsivitas cepat, analisis strategi jangka panjang, dan komunikasi efektif.
+            </p>
+          </div>
+
+          <!-- Card 3: Ngoding -->
+          <div class="p-5 rounded border border-gray-700/60 bg-slate-900/60 hover:border-cyan-400 transition-all duration-300">
+            <div class="text-3xl text-cyan-400 mb-3"><i class="fa-solid fa-code"></i></div>
+            <div style="font-size: var(--type-eyebrow); color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.2rem;">HOBI 03</div>
+            <h3 style="font-family: var(--font-display); font-size: var(--type-heading); font-weight: 700; margin-bottom: 0.5rem;">NGODING</h3>
+            <p style="font-size: var(--type-body); color: var(--raw-color-steel-400); line-height: 1.4; text-transform: none;">
+              Membangun aplikasi web interaktif, memecahkan algoritma terstruktur, serta memadukan teknologi dengan manajemen.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Galeri Gambar Khusus Ngoding -->
+        <div style="position: relative; z-index: 20;" class="mt-4 p-4 rounded bg-slate-950/80 border border-cyan-500/30">
+          <div class="flex items-center justify-between mb-3">
+            <div style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--accent);">
+              <i class="fa-solid fa-images mr-2"></i> GALERI KEGIATAN & ENVIRONMENT NGODING
+            </div>
+            <span class="text-xs text-gray-400">4 DOKUMENTASI TERPILIH</span>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <!-- Image 1 -->
+            <div class="gallery-card" onclick="playUiClick(); openImageModal('https://cdn.phototourl.com/member/2026-10-20-25bf8f15-3675-4cef-a397-11f5639d05fd.jpg', 'Eksperimen Coding & Setup Web')">
+              <img src="https://cdn.phototourl.com/member/2026-10-20-25bf8f15-3675-4cef-a397-11f5639d05fd.jpg" alt="Foto Ngoding 1" />
+              <div class="gallery-overlay">
+                <span class="text-xs font-bold text-cyan-400">DOKUMENTASI 01</span>
+                <span class="text-[0.65rem] text-gray-300 normal-case">Eksperimen Coding & Setup Web</span>
+              </div>
+            </div>
+
+            <!-- Image 2 -->
+            <div class="gallery-card" onclick="playUiClick(); openImageModal('https://cdn.phototourl.com/member/2026-10-20-99749c49-9c88-433d-a1f1-66e17feacab2.jpg', 'Pengembangan Fitur Aplikasi')">
+              <img src="https://cdn.phototourl.com/member/2026-10-20-99749c49-9c88-433d-a1f1-66e17feacab2.jpg" alt="Foto Ngoding 2" />
+              <div class="gallery-overlay">
+                <span class="text-xs font-bold text-cyan-400">DOKUMENTASI 02</span>
+                <span class="text-[0.65rem] text-gray-300 normal-case">Pengembangan Fitur Aplikasi</span>
+              </div>
+            </div>
+
+            <!-- Image 3 -->
+            <div class="gallery-card" onclick="playUiClick(); openImageModal('https://cdn.phototourl.com/member/2026-10-20-8db085e4-d5e5-4a75-a18d-9faab657193a.jpg', 'Sesi Testing & Debugging')">
+              <img src="https://cdn.phototourl.com/member/2026-10-20-8db085e4-d5e5-4a75-a18d-9faab657193a.jpg" alt="Foto Ngoding 3" />
+              <div class="gallery-overlay">
+                <span class="text-xs font-bold text-cyan-400">DOKUMENTASI 03</span>
+                <span class="text-[0.65rem] text-gray-300 normal-case">Sesi Testing & Debugging</span>
+              </div>
+            </div>
+
+            <!-- Image 4 -->
+            <div class="gallery-card" onclick="playUiClick(); openImageModal('https://cdn.phototourl.com/member/2026-10-20-3a4d89ba-43f2-4505-ac38-797290eab002.png', 'Hasil Interface Aplikasi Final')">
+              <img src="https://cdn.phototourl.com/member/2026-10-20-3a4d89ba-43f2-4505-ac38-797290eab002.png" alt="Foto Ngoding 4" />
+              <div class="gallery-overlay">
+                <span class="text-xs font-bold text-cyan-400">DOKUMENTASI 04</span>
+                <span class="text-[0.65rem] text-gray-300 normal-case">Hasil Interface Aplikasi Final</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="position: relative; z-index: 20;" class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-700 pt-3 text-xs text-gray-400 gap-2">
+          <span>KLIK GAMBAR UNTUK PRATINJAU FULL-SCREEN</span>
+          <span style="color: var(--accent);">PASSION & DOKUMENTASI CODING</span>
+        </div>
+
+      </div>
+      <div class="sticky-shade" id="season-shade"></div>
+    </section>
+
+    <!-- Section 3: Pencapaian Pembuatan Aplikasi -->
+    <section id="pencapaian" style="position: relative; background: var(--surface-black); color: var(--raw-color-white);" class="py-16 px-6 md:px-12 border-t border-gray-800">
+      <div style="max-width: 1150px; margin: 0 auto;">
+        
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+          <div>
+            <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; letter-spacing: 0.15em; margin-bottom: 0.4rem;">PORTFOLIO CODING & INOVASI</div>
+            <h2 style="font-family: var(--font-display); font-size: var(--type-display-lg); font-weight: 700; line-height: 0.95;">
+              LAMAN PENCAPAIAN<br><span style="color: var(--accent);">PEMBUATAN APLIKASI</span>
+            </h2>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs font-bold bg-slate-900 px-4 py-2 rounded border border-cyan-500/30">
+            <i class="fa-solid fa-code-branch text-cyan-400"></i>
+            <span>3 PROJECT UTAMA & EKSPLORASI BACKEND</span>
+          </div>
+        </div>
+
+        <!-- Showcase Apps Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          
+          <!-- App 1: Sistem Portal Kampus STIE Kasih Bangsa -->
+          <div class="bg-slate-900/90 border border-gray-800 rounded-lg flex flex-col justify-between hover:border-cyan-400 transition-all p-5">
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <span class="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-[0.65rem] font-bold rounded">WEB APP</span>
+                <span class="text-xs text-gray-400">2026</span>
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: #fff;" class="mb-2">
+                PORTAL AKADEMIK MAHASISWA
+              </h3>
+              <p class="text-xs text-gray-300 normal-case leading-relaxed mb-4">
+                Aplikasi antarmuka pengelolaan data perkuliahan, jadwal akademik, dan kalkulasi nilai IPK berbasis web responsif.
+              </p>
+            </div>
+
+            <div>
+              <div class="flex flex-wrap gap-1.5 mb-4 text-[0.65rem] text-cyan-300">
+                <span class="bg-slate-800 px-2 py-0.5 rounded">HTML5</span>
+                <span class="bg-slate-800 px-2 py-0.5 rounded">Tailwind CSS</span>
+                <span class="bg-slate-800 px-2 py-0.5 rounded">JavaScript</span>
+              </div>
+              <button onclick="playUiClick(); openAppModal('Portal Akademik Mahasiswa', 'Aplikasi manajemen data perkuliahan dan indeks prestasi akademik yang mengintegrasikan struktur data perkuliahan STIE Kasih Bangsa secara efisien.')" class="btn-profile w-full" style="padding: 0.5rem; font-size: 0.75rem;">
+                <span>DETAIL APLIKASI</span>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- App 2: Sistem Informasi Manajemen Inventaris -->
+          <div class="bg-slate-900/90 border border-gray-800 rounded-lg flex flex-col justify-between hover:border-cyan-400 transition-all p-5">
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-[0.65rem] font-bold rounded">PHP & DATABASE</span>
+                <span class="text-xs text-gray-400">2026</span>
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: #fff;" class="mb-2">
+                SISTEM INVENTARIS TOKO
+              </h3>
+              <p class="text-xs text-gray-300 normal-case leading-relaxed mb-4">
+                Sistem backend manajemen stok barang, laporan transaksi harian, dan notifikasi persediaan barang otomatis.
+              </p>
+            </div>
+
+            <div>
+              <div class="flex flex-wrap gap-1.5 mb-4 text-[0.65rem] text-cyan-300">
+                <span class="bg-slate-800 px-2 py-0.5 rounded">PHP Native</span>
+                <span class="bg-slate-800 px-2 py-0.5 rounded">MySQL</span>
+                <span class="bg-slate-800 px-2 py-0.5 rounded">JSON API</span>
+              </div>
+              <button onclick="playUiClick(); openPhpModal();" class="btn-profile w-full" style="padding: 0.5rem; font-size: 0.75rem; background: #1f2937; color: #38bdf8;">
+                <span>CEK KODE PHP</span>
+                <i class="fa-solid fa-file-code"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- App 3: Web Portofolio Cyber High-Tech -->
+          <div class="bg-slate-900/90 border border-gray-800 rounded-lg flex flex-col justify-between hover:border-cyan-400 transition-all p-5">
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-[0.65rem] font-bold rounded">INTERACTIVE WEB</span>
+                <span class="text-xs text-gray-400">2026</span>
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: #fff;" class="mb-2">
+                PORTOFOLIO INTERAKTIF 3D
+              </h3>
+              <p class="text-xs text-gray-300 normal-case leading-relaxed mb-4">
+                Website interaktif dengan efek Canvas 2D petir, visualisasi Three.js 3D, dan integrasi WhatsApp instan.
+              </p>
+            </div>
+
+            <div>
+              <div class="flex flex-wrap gap-1.5 mb-4 text-[0.65rem] text-cyan-300">
+                <span class="bg-slate-800 px-2 py-0.5 rounded">Three.js</span>
+                <span class="bg-slate-800 px-2 py-0.5 rounded">Canvas 2D</span>
+                <span class="bg-slate-800 px-2 py-0.5 rounded">Lenis Motion</span>
+              </div>
+              <button onclick="playUiClick(); openAppModal('Portofolio Interaktif 3D', 'Website personal Alfath Adi Putra yang menggabungkan elemen visual modern, responsivitas penuh, serta kemudahan komunikasi.')" class="btn-profile w-full" style="padding: 0.5rem; font-size: 0.75rem;">
+                <span>DETAIL APLIKASI</span>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Metric Ticker Bar -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-900/60 p-5 rounded border border-gray-800 text-center">
+          <div>
+            <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--accent);">100%</div>
+            <div class="text-[0.7rem] text-gray-400">KODE RESPONSIF</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #fff;">10,000+</div>
+            <div class="text-[0.7rem] text-gray-400">BARIS KODE DITULIS</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--accent);">PHP & JS</div>
+            <div class="text-[0.7rem] text-gray-400">BAHASA UTAMA</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #fff;">STIE KB</div>
+            <div class="text-[0.7rem] text-gray-400">PRODI MANAJEMEN</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 4: Keseharian & Rutinitas -->
+    <section class="sticky-layer" data-timeline id="keseharian" style="z-index: 30; background: var(--surface-black); color: var(--raw-color-white);">
+      <div class="sticky-inner" style="position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 2rem 1.5rem;" class="md:p-10">
+        
+        <div>
+          <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; letter-spacing: 0.15em; margin-bottom: 0.25rem;">RUTINITAS & KESEHARIAN</div>
+          <h2 style="font-family: var(--font-display); font-size: var(--type-display); font-weight: 700; line-height: 0.95;">
+            DEDIKASI KELUARGA & AKADEMIK
+          </h2>
+        </div>
+
+        <div class="flex flex-col gap-4 my-4 pl-5 border-l-2 border-gray-700">
+          
+          <!-- Activity 1: Membantu Orang Tua -->
+          <div class="relative bg-slate-900/80 border border-gray-700 p-5 rounded">
+            <div class="absolute -left-[1.7rem] top-6 w-3.5 h-3.5 bg-cyan-400 rounded-sm"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+              <span style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--accent);">
+                01. MEMBANTU ORANG TUA
+              </span>
+              <span class="text-xs text-gray-400 font-semibold"><i class="fa-solid fa-house-user mr-1"></i> BAKTI & TANGGUNG JAWAB RUMAH</span>
+            </div>
+            <p style="font-size: var(--type-body); color: var(--raw-color-steel-400); text-transform: none; line-height: 1.4;">
+              Meluangkan waktu dan tenaga setiap hari untuk membantu kegiatan serta urusan orang tua di rumah. Menjaga komitmen bakti sebagai fondasi kedisiplinan dan tanggung jawab moral.
+            </p>
+          </div>
+
+          <!-- Activity 2: Berkuliah di STIE Kasih Bangsa -->
+          <div class="relative bg-slate-900/80 border border-gray-700 p-5 rounded">
+            <div class="absolute -left-[1.7rem] top-6 w-3.5 h-3.5 bg-white rounded-sm"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+              <span style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: #fff;">
+                02. BERKULIAH DI STIE KASIH BANGSA
+              </span>
+              <span class="text-xs text-gray-400 font-semibold"><i class="fa-solid fa-building-columns mr-1"></i> PRODI MANAJEMEN S1</span>
+            </div>
+            <p style="font-size: var(--type-body); color: var(--raw-color-steel-400); text-transform: none; line-height: 1.4;">
+              Menempuh pendidikan S1 pada Program Studi Manajemen di STIE Kasih Bangsa. Mempelajari prinsip-prinsip organisasi, kepemimpinan, dan pengelolaan bisnis modern.
+            </p>
+          </div>
+
+          <!-- Activity 3: Mengerjakan Tugas & Project -->
+          <div class="relative bg-slate-900/80 border border-gray-700 p-5 rounded">
+            <div class="absolute -left-[1.7rem] top-6 w-3.5 h-3.5 bg-cyan-400 rounded-sm"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+              <span style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--accent);">
+                03. MENGERJAKAN TUGAS & PROJECT
+              </span>
+              <span class="text-xs text-gray-400 font-semibold"><i class="fa-solid fa-laptop-code mr-1"></i> AKADEMIK & EKSPLORASI CODING</span>
+            </div>
+            <p style="font-size: var(--type-body); color: var(--raw-color-steel-400); text-transform: none; line-height: 1.4;">
+              Menyelesaikan tugas-tugas perkuliahan tepat waktu serta mengasah logika pemrograman melalui eksperimen pembuatan website dan aplikasi mandiri secara konsisten.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-700 pt-3 text-xs text-gray-400 gap-2">
+          <span>STIE KASIH BANGSA • PRODI MANAJEMEN</span>
+          <span>RUTINITAS TERATUR & PRODUKTIF</span>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Section 5: Manajemen & Kesimpulan -->
+  <section id="manajemen" style="position: relative; background: var(--background); color: var(--foreground);" class="py-16 px-6 md:px-12">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+        <div>
+          <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; letter-spacing: 0.15em; margin-bottom: 0.4rem;">PERSPEKTIF MANAJEMEN</div>
+          <h2 style="font-family: var(--font-display); font-size: var(--type-display-lg); font-weight: 700; line-height: 0.95;">
+            SINERGI MANAJEMEN<br>& TEKNOLOGI DIGITAL
+          </h2>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button onclick="playUiClick(); openPhpModal();" class="btn-profile" style="background: #1f2937; color: #38bdf8;">
+            <i class="fa-solid fa-file-code"></i>
+            <span>LIHAT KODE PHP</span>
+          </button>
+          <button onclick="playUiClick(); openModal();" class="btn-profile">
+            <span>HUBUNGI SAYA</span>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-8 text-sm md:text-base leading-relaxed normal-case">
+          <p class="mb-3">
+            Sebagai mahasiswa <strong>Prodi Manajemen di STIE Kasih Bangsa</strong>, Alfath Adi Putra memadukan pemahaman teori organisasi dan manajemen dengan keterampilan teknologi digital modern.
+          </p>
+          <p class="mb-3">
+            Nilai-nilai dari hobi <em>main bola</em> mengajarkan arti kedisiplinan dan kerja tim, <em>main game</em> mengasah strategi dan responsivitas cepat, sementara kecintaan pada <em>ngoding</em> memberikan alat praktis untuk mewujudkan gagasan menjadi solusi web yang fungsional.
+          </p>
+          <p>
+            Di balik antarmuka ini, sistem form kontak juga terhubung dengan skrip backend <strong>PHP</strong> untuk memproses pesan dan meneruskannya secara instan ke WhatsApp dan Email.
+          </p>
+        </div>
+
+        <div class="lg:col-span-4 p-5 rounded-lg bg-slate-900 text-white shadow-lg">
+          <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.5rem;">RINGKASAN PROFIL</div>
+          <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem;">ALFATH ADI PUTRA</div>
+          <div style="font-size: var(--type-body); color: var(--raw-color-steel-400); margin-bottom: 0.5rem;">STIE KASIH BANGSA</div>
+          <div style="font-size: var(--type-eyebrow); color: var(--accent);">PRODI MANAJEMEN • MAHASISWA AKTIF</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="kontak" style="position: relative; background: var(--accent); padding: 0.5rem;">
+    <div style="background: var(--surface-black); color: var(--raw-color-white);" class="py-12 px-6 md:px-10 rounded">
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-6">
+        <div>
+          <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; letter-spacing: 0.15em; margin-bottom: 0.4rem;">TERUS MELANGKAH MAJU</div>
+          <h2 style="font-family: var(--font-display); font-size: var(--type-impact); font-weight: 700; line-height: 0.9;">
+            KEEP PUSHING<br><span style="color: var(--accent);">FORWARD</span>.
+          </h2>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a href="https://wa.me/6285935617640" target="_blank" onclick="playUiClick()" class="btn-profile" style="background: #25D366; color: #000;">
+            <i class="fa-brands fa-whatsapp text-base"></i>
+            <span>CHAT WHATSAPP</span>
+          </a>
+          <button onclick="playUiClick(); openModal();" class="btn-profile" style="padding: 0.75rem 1.5rem;">
+            <span>KIRIM PESAN</span>
+            <i class="fa-solid fa-envelope"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 border-t border-gray-700 pt-6 mb-6">
+        <div>
+          <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">ALFATH ADI PUTRA</div>
+          <p style="font-size: var(--type-body); color: var(--raw-color-steel-400); text-transform: none;">
+            Mahasiswa Prodi Manajemen STIE Kasih Bangsa. Memadukan tanggung jawab keluarga, hobi main bola, main game, dan ngoding.
+          </p>
+        </div>
+
+        <div>
+          <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.75rem;">KONTAK UTAMA</div>
+          <ul class="flex flex-col gap-2 text-xs text-gray-300 normal-case">
+            <li>
+              <a href="https://wa.me/6285935617640" target="_blank" onclick="playUiClick()" class="hover:text-emerald-400 flex items-center gap-2">
+                <i class="fa-brands fa-whatsapp text-emerald-400"></i> WhatsApp: 085935617640
+              </a>
+            </li>
+            <li>
+              <a href="mailto:alfathadiputra24@gmail.com" onclick="playUiClick()" class="hover:text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-envelope text-cyan-400"></i> alfathadiputra24@gmail.com
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.75rem;">HOBI UTAMA</div>
+          <ul class="flex flex-col gap-1.5 text-xs text-gray-400">
+            <li><i class="fa-solid fa-futbol mr-2 text-cyan-400"></i> Main Bola</li>
+            <li><i class="fa-solid fa-gamepad mr-2 text-cyan-400"></i> Main Game</li>
+            <li><i class="fa-solid fa-code mr-2 text-cyan-400"></i> Ngoding</li>
+          </ul>
+        </div>
+
+        <div>
+          <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.75rem;">KAMPUS</div>
+          <div class="text-xs text-gray-400 normal-case">
+            STIE Kasih Bangsa<br>Prodi Manajemen S1
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-700 pt-4 text-xs text-gray-400 gap-2">
+        <div>© 2026 ALFATH ADI PUTRA • STIE KASIH BANGSA. HAK CIPTA DILINDUNGI.</div>
+        <div style="color: var(--accent);">INDONESIA</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Contact Modal -->
+  <div id="contact-modal" style="position: fixed; inset: 0; z-index: 120; display: none; align-items: center; justify-content: center; background: rgba(9, 10, 11, 0.85); backdrop-filter: blur(12px); padding: 1.25rem;">
+    <div style="position: relative; width: 100%; max-width: 28rem; background: var(--surface-dark); padding: 2rem; border-radius: 8px;">
+      <button onclick="playUiClick(); closeModal();" style="position: absolute; top: 1rem; right: 1rem; color: var(--raw-color-white); font-size: 1.1rem;">✕</button>
+
+      <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.4rem;">HUBUNGI ALFATH ADI PUTRA</div>
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--raw-color-white); margin-bottom: 0.8rem;">KIRIM PESAN ATAU DISKUSI</h3>
+
+      <div class="mb-4 p-3 bg-cyan-950/40 border border-cyan-500/30 rounded text-xs text-gray-300 normal-case">
+        <p class="font-bold text-cyan-400 mb-1">Kontak Langsung:</p>
+        <p>📱 WhatsApp: <a href="https://wa.me/6285935617640" target="_blank" onclick="playUiClick()" class="text-emerald-400 underline">085935617640</a></p>
+        <p>✉️ Email: <a href="mailto:alfathadiputra24@gmail.com" onclick="playUiClick()" class="text-cyan-400 underline">alfathadiputra24@gmail.com</a></p>
+      </div>
+
+      <form id="contact-form" onsubmit="handleModalSubmit(event)" action="" method="POST" style="display: flex; flex-direction: column; gap: 0.8rem;">
+        <div>
+          <label style="font-size: var(--type-eyebrow); color: var(--raw-color-steel-400); display: block; margin-bottom: 0.2rem;">NAMA LENGKAP</label>
+          <input type="text" id="form-nama" name="nama" required placeholder="Nama Anda" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--surface-black); border: 1px solid var(--raw-color-ink-700); color: #fff; font-family: var(--font-sans); outline: none; font-size: 0.85rem;" />
+        </div>
+
+        <div>
+          <label style="font-size: var(--type-eyebrow); color: var(--raw-color-steel-400); display: block; margin-bottom: 0.2rem;">EMAIL / KONTAK</label>
+          <input type="email" id="form-email" name="email" required placeholder="email@contoh.com" style="width: 100%; padding: 0.6rem 0.8rem; background: var(--surface-black); border: 1px solid var(--raw-color-ink-700); color: #fff; font-family: var(--font-sans); outline: none; font-size: 0.85rem;" />
+        </div>
+
+        <div>
+          <label style="font-size: var(--type-eyebrow); color: var(--raw-color-steel-400); display: block; margin-bottom: 0.2rem;">PESAN / SUBJEK</label>
+          <textarea id="form-pesan" name="pesan" required rows="3" placeholder="Tuliskan pesan Anda..." style="width: 100%; padding: 0.6rem 0.8rem; background: var(--surface-black); border: 1px solid var(--raw-color-ink-700); color: #fff; font-family: var(--font-sans); outline: none; resize: none; font-size: 0.85rem;"></textarea>
+        </div>
+
+        <button type="submit" onclick="playUiClick()" class="btn-profile" style="width: 100%; margin-top: 0.4rem; padding: 0.7rem 1rem;">
+          <span id="modal-btn-text">KIRIM PESAN LEWAT WHATSAPP</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div id="image-modal" style="position: fixed; inset: 0; z-index: 150; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(15px); padding: 1.5rem;" onclick="playUiClick(); closeImageModal();">
+    <div class="relative max-w-4xl w-full flex flex-col items-center" onclick="event.stopPropagation()">
+      <button onclick="playUiClick(); closeImageModal();" style="position: absolute; top: -2.5rem; right: 0; color: #fff; font-size: 1.5rem; font-weight: bold;">✕ TUTUP</button>
+      <img id="modal-img-display" src="" class="max-h-[75vh] w-auto object-contain rounded border border-cyan-500/50 shadow-2xl mb-3" alt="Pratinjau Foto" />
+      <div id="modal-img-caption" class="text-sm font-semibold text-cyan-400 tracking-wide text-center"></div>
+    </div>
+  </div>
+
+  <!-- App Details Modal -->
+  <div id="app-modal" style="position: fixed; inset: 0; z-index: 140; display: none; align-items: center; justify-content: center; background: rgba(9, 10, 11, 0.88); backdrop-filter: blur(12px); padding: 1.25rem;">
+    <div style="position: relative; width: 100%; max-width: 32rem; background: var(--surface-dark); padding: 2rem; border-radius: 8px;">
+      <button onclick="playUiClick(); closeAppModal();" style="position: absolute; top: 1rem; right: 1rem; color: var(--raw-color-white); font-size: 1.1rem;">✕</button>
+
+      <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.4rem;">DETAIL PENCAPAIAN APLIKASI</div>
+      <h3 id="app-modal-title" style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--raw-color-white); margin-bottom: 0.8rem;">---</h3>
+
+      <div id="app-modal-desc" class="text-xs text-gray-300 normal-case leading-relaxed mb-5 bg-slate-950 p-4 rounded border border-gray-800">
+        ---
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button onclick="playUiClick(); closeAppModal();" class="btn-profile" style="padding: 0.5rem 1.25rem;">
+          <span>TUTUP</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHP Code Inspector Modal -->
+  <div id="php-modal" style="position: fixed; inset: 0; z-index: 130; display: none; align-items: center; justify-content: center; background: rgba(9, 10, 11, 0.9); backdrop-filter: blur(12px); padding: 1.25rem;">
+    <div style="position: relative; width: 100%; max-width: 42rem; background: var(--surface-dark); padding: 1.75rem; border-radius: 8px;">
+      <button onclick="playUiClick(); closePhpModal();" style="position: absolute; top: 1rem; right: 1rem; color: var(--raw-color-white); font-size: 1.1rem;">✕</button>
+
+      <div style="font-size: var(--type-eyebrow); color: var(--accent); font-weight: 700; margin-bottom: 0.2rem;">SERVER-SIDE PHP BACKEND CODE</div>
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--raw-color-white); margin-bottom: 0.6rem;">
+        FILE: contact.php (PROSES FORM & WHATSAPP REDIRECT)
+      </h3>
+
+      <div class="relative bg-black/90 p-3 rounded border border-gray-700 text-xs font-mono text-emerald-400 overflow-x-auto max-h-80 normal-case mb-3">
+<pre><code>&lt;?php
+/**
+ * Backend Script Contact Form Handler
+ * Alfath Adi Putra — STIE Kasih Bangsa (Prodi Manajemen)
+ * WhatsApp: 085935617640 | Email: alfathadiputra24@gmail.com
+ */
+
+header('Content-Type: application/json; charset=utf-8');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nama  = filter_input(INPUT_POST, 'nama', FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $pesan = filter_input(INPUT_POST, 'pesan', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (!$nama || !$email || !$pesan) {
+        echo json_encode(['status' => 'error', 'message' => 'Harap isi semua kolom dengan benar.']);
+        exit;
+    }
+
+    // Tautkan pesan langsung ke WhatsApp Alfath Adi Putra
+    $waNumber = "6285935617640";
+    $textMsg  = "Halo Alfath Adi Putra,\n\nNama: {$nama}\nEmail: {$email}\nPesan: {$pesan}";
+    $waUrl    = "https://wa.me/{$waNumber}?text=" . urlencode($textMsg);
+
+    echo json_encode([
+        'status'   => 'success',
+        'message'  => 'Pesan berhasil diproses!',
+        'redirect' => $waUrl
+    ]);
+    exit;
+}
+?&gt;</code></pre>
+      </div>
+
+      <div class="flex justify-between items-center text-xs text-gray-400">
+        <span>STIE KASIH BANGSA • MANAJEMEN</span>
+        <button onclick="playUiClick(); copyPhpCode();" class="btn-profile" style="padding: 0.4rem 1rem; font-size: 0.75rem;">
+          <span id="copy-btn-text">SALIN KODE PHP</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import Lenis from 'lenis';
+
+    /* Web Audio API Sound Generator */
+    let audioContext = null;
+
+    function getAudioContext() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      return audioContext;
+    }
+
+    window.playUiClick = function() {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.08);
+
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      } catch (e) {
+        // Fallback gracefully
+      }
+    };
+
+    function playLightningSound() {
+      try {
+        const ctx = getAudioContext();
+        const bufferSize = ctx.sampleRate * 0.35;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(1400, ctx.currentTime);
+        filter.Q.setValueAtTime(3.5, ctx.currentTime);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        noise.start();
+      } catch (e) {
+        // Fallback
+      }
+    }
+
+    let isMusicPlaying = false;
+    const bgAudio = document.getElementById('bg-music');
+    const musicStatusText = document.getElementById('music-status-text');
+    const eqContainer = document.getElementById('eq-container');
+
+    window.toggleMusic = function() {
+      if (!bgAudio) return;
+      if (isMusicPlaying) {
+        bgAudio.pause();
+        isMusicPlaying = false;
+        if (musicStatusText) musicStatusText.innerHTML = '<i class="fa-solid fa-music mr-1"></i> MUSIK: OFF';
+        if (eqContainer) eqContainer.classList.add('opacity-50');
+      } else {
+        bgAudio.play().then(() => {
+          isMusicPlaying = true;
+          if (musicStatusText) musicStatusText.innerHTML = '<i class="fa-solid fa-compact-disc fa-spin mr-1 text-cyan-400"></i> MUSIK: ON';
+          if (eqContainer) eqContainer.classList.remove('opacity-50');
+        }).catch(e => {
+          console.log("Audio play blocked by browser policy:", e);
+        });
+      }
+    };
+
+    const lCanvas = document.getElementById('lightning-canvas');
+    if (lCanvas) {
+      const lCtx = lCanvas.getContext('2d');
+      let bolts = [];
+
+      function resizeLCanvas() {
+        lCanvas.width = window.innerWidth;
+        lCanvas.height = window.innerHeight;
+      }
+      resizeLCanvas();
+      window.addEventListener('resize', resizeLCanvas);
+
+      function createLightning(x1, y1, x2, y2, opacity) {
+        let path = [{x: x1, y: y1}];
+        let steps = 18;
+        let dx = (x2 - x1) / steps;
+        let dy = (y2 - y1) / steps;
+
+        for (let i = 1; i < steps; i++) {
+          let nx = x1 + dx * i + (Math.random() - 0.5) * 50;
+          let ny = y1 + dy * i + (Math.random() - 0.5) * 50;
+          path.push({x: nx, y: ny});
+        }
+        path.push({x: x2, y: y2});
+
+        bolts.push({ path, opacity, width: Math.random() * 3.5 + 1 });
+      }
+
+      function animateLightning() {
+        lCtx.clearRect(0, 0, lCanvas.width, lCanvas.height);
+        
+        if (Math.random() < 0.28) {
+          const cx = lCanvas.width / 2;
+          const cy = lCanvas.height / 2;
+          const angle = Math.random() * Math.PI * 2;
+          const len = Math.random() * 320 + 120;
+          createLightning(cx, cy, cx + Math.cos(angle) * len, cy + Math.sin(angle) * len, 1.0);
+          playLightningSound();
+        }
+
+        for (let b = bolts.length - 1; b >= 0; b--) {
+          const bolt = bolts[b];
+          lCtx.strokeStyle = `rgba(2, 210, 227, ${bolt.opacity})`;
+          lCtx.shadowColor = '#02d2e3';
+          lCtx.shadowBlur = 18;
+          lCtx.lineWidth = bolt.width;
+          lCtx.beginPath();
+          for (let p = 0; p < bolt.path.length; p++) {
+            if (p === 0) lCtx.moveTo(bolt.path[p].x, bolt.path[p].y);
+            else lCtx.lineTo(bolt.path[p].x, bolt.path[p].y);
+          }
+          lCtx.stroke();
+
+          bolt.opacity -= 0.08;
+          if (bolt.opacity <= 0) {
+            bolts.splice(b, 1);
+          }
+        }
+
+        if (document.getElementById('loading-veil').style.display !== 'none') {
+          requestAnimationFrame(animateLightning);
+        }
+      }
+      requestAnimationFrame(animateLightning);
+    }
+
+    window.scrollTo(0, 0);
+    const lenis = new Lenis({ smoothWheel: true });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    const veil = document.getElementById('loading-veil');
+    const veilFill = document.getElementById('veil-fill');
+    const veilMeter = document.getElementById('veil-meter');
+
+    let progress = 0;
+    const loadInterval = setInterval(() => {
+      progress += 0.08;
+      if (progress >= 1) {
+        progress = 1;
+        clearInterval(loadInterval);
+        setTimeout(() => {
+          veil.style.opacity = '0';
+          veil.style.transition = 'opacity 0.6s cubic-bezier(0.2, 0, 0, 1)';
+          setTimeout(() => { veil.style.display = 'none'; }, 600);
+        }, 300);
+      }
+      if (veilFill) veilFill.style.transform = `scaleY(${progress})`;
+      if (veilMeter) veilMeter.style.width = `${progress * 100}%`;
+    }, 35);
+
+    const canvas = document.getElementById('hero-canvas');
+    if (canvas) {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 50);
+      camera.position.z = 6.5;
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      const geometry = new THREE.IcosahedronGeometry(1.8, 4);
+      const wireframeGeo = new THREE.WireframeGeometry(geometry);
+      
+      const material = new THREE.LineBasicMaterial({
+        color: 0x02d2e3,
+        transparent: true,
+        opacity: 0.35
+      });
+
+      const particleSphere = new THREE.LineSegments(wireframeGeo, material);
+      scene.add(particleSphere);
+
+      const coreGeo = new THREE.IcosahedronGeometry(1.3, 2);
+      const coreMat = new THREE.MeshBasicMaterial({
+        color: 0x090a0b,
+        wireframe: false
+      });
+      const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+      scene.add(coreMesh);
+
+      let mouseX = 0, mouseY = 0;
+      let targetX = 0, targetY = 0;
+
+      window.addEventListener('pointermove', (e) => {
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      function animateHero(time) {
+        targetX += (mouseX - targetX) * 0.05;
+        targetY += (mouseY - targetY) * 0.05;
+
+        particleSphere.rotation.y = time * 0.0004 + targetX * 0.5;
+        particleSphere.rotation.x = time * 0.0003 + targetY * 0.5;
+
+        coreMesh.rotation.y = -time * 0.0005;
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animateHero);
+      }
+      requestAnimationFrame(animateHero);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    const cheqCanvas = document.getElementById('chequer-canvas');
+    if (cheqCanvas) {
+      const ctx = cheqCanvas.getContext('2d');
+      function drawChequer() {
+        const w = cheqCanvas.width = window.innerWidth;
+        const h = cheqCanvas.height = window.innerHeight * 0.3;
+        ctx.clearRect(0, 0, w, h);
+
+        const cellSize = 24;
+        const cols = Math.ceil(w / cellSize);
+        const rows = Math.ceil(h / cellSize);
+
+        for (let r = 0; r < rows; r++) {
+          const fade = 1 - (r / rows);
+          for (let c = 0; c < cols; c++) {
+            if ((r + c) % 2 === 0 && Math.random() < fade) {
+              ctx.fillStyle = (Math.random() < 0.12) ? '#02d2e3' : '#f7fafb';
+              ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+            }
+          }
+        }
+      }
+      drawChequer();
+      window.addEventListener('resize', drawChequer);
+    }
+
+    const retCanvas = document.getElementById('reticle-canvas');
+    if (retCanvas) {
+      const ctx = retCanvas.getContext('2d');
+      let rx = -100, ry = -100;
+
+      window.addEventListener('mousemove', (e) => {
+        const rect = retCanvas.getBoundingClientRect();
+        rx = e.clientX - rect.left;
+        ry = e.clientY - rect.top;
+      });
+
+      function drawReticle() {
+        const w = retCanvas.width = window.innerWidth;
+        const h = retCanvas.height = window.innerHeight;
+        ctx.clearRect(0, 0, w, h);
+
+        ctx.strokeStyle = 'rgba(77, 77, 77, 0.2)';
+        ctx.lineWidth = 1;
+
+        if (rx > 0 && ry > 0) {
+          ctx.strokeStyle = 'rgba(2, 210, 227, 0.35)';
+          ctx.beginPath();
+          ctx.moveTo(rx, 0); ctx.lineTo(rx, h);
+          ctx.moveTo(0, ry); ctx.lineTo(w, ry);
+          ctx.stroke();
+
+          ctx.strokeStyle = '#02d2e3';
+          ctx.beginPath();
+          ctx.arc(rx, ry, 22, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        requestAnimationFrame(drawReticle);
+      }
+      drawReticle();
+    }
+
+    window.openModal = function() {
+      const m = document.getElementById('contact-modal');
+      if (m) m.style.display = 'flex';
+    };
+
+    window.closeModal = function() {
+      const m = document.getElementById('contact-modal');
+      if (m) m.style.display = 'none';
+    };
+
+    window.openImageModal = function(src, caption) {
+      const m = document.getElementById('image-modal');
+      const img = document.getElementById('modal-img-display');
+      const cap = document.getElementById('modal-img-caption');
+      if (img) img.src = src;
+      if (cap) cap.innerText = caption;
+      if (m) m.style.display = 'flex';
+    };
+
+    window.closeImageModal = function() {
+      const m = document.getElementById('image-modal');
+      if (m) m.style.display = 'none';
+    };
+
+    window.openAppModal = function(title, desc) {
+      const m = document.getElementById('app-modal');
+      const t = document.getElementById('app-modal-title');
+      const d = document.getElementById('app-modal-desc');
+      if (t) t.innerText = title;
+      if (d) d.innerText = desc;
+      if (m) m.style.display = 'flex';
+    };
+
+    window.closeAppModal = function() {
+      const m = document.getElementById('app-modal');
+      if (m) m.style.display = 'none';
+    };
+
+    window.openPhpModal = function() {
+      const m = document.getElementById('php-modal');
+      if (m) m.style.display = 'flex';
+    };
+
+    window.closePhpModal = function() {
+      const m = document.getElementById('php-modal');
+      if (m) m.style.display = 'none';
+    };
+
+    window.copyPhpCode = function() {
+      const code = `<?php
+/**
+ * Backend Script Contact Form Handler
+ * Alfath Adi Putra — STIE Kasih Bangsa (Prodi Manajemen)
+ * WhatsApp: 085935617640 | Email: alfathadiputra24@gmail.com
+ */
+
+header('Content-Type: application/json; charset=utf-8');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nama  = filter_input(INPUT_POST, 'nama', FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $pesan = filter_input(INPUT_POST, 'pesan', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (!$nama || !$email || !$pesan) {
+        echo json_encode(['status' => 'error', 'message' => 'Harap isi semua kolom dengan benar.']);
+        exit;
+    }
+
+    $waNumber = "6285935617640";
+    $textMsg  = "Halo Alfath Adi Putra,\n\nNama: {$nama}\nEmail: {$email}\nPesan: {$pesan}";
+    $waUrl    = "https://wa.me/{$waNumber}?text=" . urlencode($textMsg);
+
+    echo json_encode([
+        'status'   => 'success',
+        'message'  => 'Pesan berhasil diproses!',
+        'redirect' => $waUrl
+    ]);
+    exit;
+}
+?>`;
+
+      const dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = code;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+
+      const btnText = document.getElementById('copy-btn-text');
+      if (btnText) {
+        btnText.innerText = 'BERHASIL DISALIN!';
+        setTimeout(() => { btnText.innerText = 'SALIN KODE PHP'; }, 2000);
+      }
+    };
+
+    window.handleModalSubmit = function(e) {
+      e.preventDefault();
+      const nama = document.getElementById('form-nama')?.value || 'Teman';
+      const email = document.getElementById('form-email')?.value || '';
+      const pesan = document.getElementById('form-pesan')?.value || '';
+      
+      const btnText = document.getElementById('modal-btn-text');
+      if (btnText) btnText.innerText = 'MEMPROSES PESAN...';
+      
+      setTimeout(() => {
+        const textWA = `Halo Alfath Adi Putra,%0ANama: ${encodeURIComponent(nama)}%0AEmail: ${encodeURIComponent(email)}%0APesan: ${encodeURIComponent(pesan)}`;
+        window.open(`https://wa.me/6285935617640?text=${textWA}`, '_blank');
+        
+        if (btnText) btnText.innerText = 'TERHUBUNG KE WHATSAPP!';
+        setTimeout(() => {
+          closeModal();
+          if (btnText) btnText.innerText = 'KIRIM PESAN LEWAT WHATSAPP';
+          document.getElementById('contact-form')?.reset();
+        }, 1000);
+      }, 500);
+    };
+  </script>
+</body>
+</html>
